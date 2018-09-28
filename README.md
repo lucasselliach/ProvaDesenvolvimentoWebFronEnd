@@ -1,5 +1,26 @@
 # ProjetoWeb
 
+1) (6 pontos) Utilizando um framework de sua preferência, desenvolva um sistema web conforme cenário e requisitos abaixo.
+
+##Cenário
+O sistema será responsável por auxiliar o usuário no cumprimento de suas tarefas diárias. Para isso, deverá ser permitido adicionar itens a uma lista, informando a atividade a ser executada, o deadline (a data limite para conclusão), e o grau de prioridade (baixo, médio, alto).
+
+##Requisitos funcionais
+- Permitir a inclusão de tarefas na lista.
+- Permitir o encerramento de uma tarefa ativa.
+- Permitir a ordenação por prioridade.
+- Permitir a ordenação por data limite para conclusão.
+##Requisitos não-funcionais
+- Utilizar API Web Storage para armazenar as tarefas.
+- Utilizar API Drag and Drop para mover as tarefas para tarefas concluídas.
+- Utilizar Framework UI para construção das Interfaces.
+- O sistema deve ser construído utilizando o conceito SPA (Single Page Aplication).
+
+
+
+
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.1.
 
 ## Development server
