@@ -1,0 +1,168 @@
+<div class="jumbotron text-center" style="margin-bottom:0;">
+  <h1>Tarefas Diárias</h1>
+  <p>Tudo que você precisa para se organizar</p> 
+</div>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <a class="navbar-brand" href="#">Sistema de Estudo - Gerenciador de tarefas</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+    </ul>
+  </div>  
+</nav>
+
+<div class="container" style="margin-top:30px; margin-bottom:30px">
+  <div class="row">    
+    <div class="col-sm-4">
+      <h4>Passo 1: Iniciar</h4>
+      <div class="card">
+        <form [formGroup]="formGroup">
+          <div class="card-header">
+            <div *ngIf="formGroup.controls['titulo'].invalid && (formGroup.controls['titulo'].dirty || formGroup.controls['titulo'].touched)" class="alert alert-danger">
+              <div *ngIf="formGroup.controls['titulo'].hasError('required')">Titulo é inválido. Informe o titulo.</div>
+              <div *ngIf="formGroup.controls['titulo'].hasError('minlength')">Titulo é inválido. Informe o titulo com no minimo 3 caracteres.</div>
+              <div *ngIf="formGroup.controls['titulo'].hasError('maxlength')">Titulo é inválido. Informe o titulo com no maximo 20 caracteres.</div>    
+            </div>
+            <div *ngIf="formGroup.controls['descricao'].invalid && (formGroup.controls['descricao'].dirty || formGroup.controls['descricao'].touched)" class="alert alert-danger">  
+              <div *ngIf="formGroup.controls['descricao'].hasError('required')">Descrição é inválido. Informe a descrição.</div>
+              <div *ngIf="formGroup.controls['descricao'].hasError('minlength')">Descrição é inválido. Informe a descrição com no minimo 3 caracteres.</div>
+              <div *ngIf="formGroup.controls['descricao'].hasError('maxlength')">Descrição é inválido. Informe a descrição com no maximo 100 caracteres.</div>
+            </div>
+            <div *ngIf="formGroup.controls['prioridade'].invalid && (formGroup.controls['prioridade'].dirty || formGroup.controls['prioridade'].touched)" class="alert alert-danger">  
+              <div *ngIf="formGroup.controls['prioridade'].hasError('required')">Prioridade é inválido. Informe a prioridade.</div>
+              <div *ngIf="formGroup.controls['prioridade'].hasError('min')">Prioridade é inválido. Informe a prioridade (1 = MAIOR).</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <label>Titulo</label>
+              <input type="text" class="form-control" formControlName="titulo"/>
+            </div>
+            <div class="row">
+              <label>Descrição</label>
+              <input type="text" class="form-control" formControlName="descricao"/>
+            </div>
+            <div class="row">
+              <label>Prioridade</label>
+              <input type="number" class="form-control" formControlName="prioridade"/>
+            </div>
+            <div class="row">
+              <label>Data limite</label>
+              <input type="date" class="form-control" formControlName="dataFim"/>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary btn-block" (click)="formGroupOnClick()" [disabled]="formGroup.pristine || formGroup.invalid">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <div class="row">
+        <div class="col-sm-8">
+          <h4>Passo 2: Organizar</h4>
+        </div>
+            
+        <div class="col-sm-4">
+          <div class="form-check-inline">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="optradio" (click)="dataClick()" checked>Data
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="optradio" (click)="prioridadeClick()">Prioridade
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-deck">
+        <div class="card bg-warning">
+          <div class="card-body text-center">
+            <div class="card-text" >
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let tarefasEmAndamento of listaDeTarefasEmAndamento" id="drag1" draggable="true" (dragstart)="drag($event, tarefasEmAndamento)" >
+                  <div class="card">
+                    <div class="card-header">
+                      {{tarefasEmAndamento.titulo}}
+                    </div>
+                    <div class="card-body">
+                      {{tarefasEmAndamento.dataFim}} PRIORIDADE:{{tarefasEmAndamento.prioridade}}
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-block" (click)="finalizarOnClick(tarefasEmAndamento)">Finalizar</button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card bg-success">
+          <div class="card-body text-center">
+              <div class="card-text">
+                <ul class="list-group" id="div2" (drop)="drop($event)" (dragover)="allowDrop($event)">
+                    <li class="list-group-item" *ngFor="let tarefasFinalizadas of listaDeTarefasFinalizados">
+                      <div class="card">
+                        <div class="card-header">
+                          {{tarefasFinalizadas.titulo}}
+                        </div>
+                        <div class="card-body">
+                          {{tarefasFinalizadas.dataFim}} PRIORIDADE:{{tarefasFinalizadas.prioridade}}
+                        </div>
+                        <div class="card-footer">
+                        </div>
+                      </div>
+                    </li>
+                </ul>
+              </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="jumbotron text-center" style="margin-bottom:0">
+
+
+
+
+</div>
+
+<footer class="page-footer font-small blue pt-4">
+  <div class="container-fluid text-center text-md-left">
+    <div class="row">
+      <div class="col-md-6 mt-md-0 mt-3">
+        <h5 class="text-uppercase">Sobre</h5>
+        <p>Esse site é um caso de estudo, um trabalho realizado para a disciplica de técnologias web: FrontEnd. Tecnologias utilizadas: HTML5, Bootstrap4, AngularCli6.2.3, Angular:6.1.9<b> Curso de pós-graduação em desenvolvimento de sistemas para web da UNIVALI.</b></p>
+      </div>
+      
+      <hr class="clearfix w-100 d-md-none pb-3">
+
+      <div class="col-md-3 mb-md-0 mb-3">
+        <h5 class="text-uppercase">Sobre</h5>
+        <ul class="list-unstyled">
+          <li>
+            <a href="https://lucasselliach.github.io/">Lucas WebSite</a>
+          </li>
+          <li>
+            <a href="https://github.com/lucasselliach">Lucas GitHub</a>
+          </li>
+          <li>
+            <a href="https://github.com/lucasselliach/ProvaDesenvolvimentoWebFronEnd">FONTE PROJETO</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright text-center py-3">© 2018 Copyright:
+    <a href="#"> Lucas Selliach</a>
+  </div>
+</footer>
